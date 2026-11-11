@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>不存在的第十三冊</title>
+  <link rel="stylesheet" href="style.css?v=20.75">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div id="flashLayer" class="flash-layer" aria-hidden="true"></div>
+  <div id="mistLayer" class="mist-layer" aria-hidden="true"></div>
+  <div id="crtLayer" class="crt-layer" aria-hidden="true"></div>
+  <div id="ghostLayer" class="ghost-layer" aria-hidden="true"></div>
+  <div id="pageTurnLayer" class="page-turn-layer" aria-hidden="true"></div>
+  <div id="shatterLayer" class="shatter-layer" aria-hidden="true">
+    <span class="shard shard-1"></span><span class="shard shard-2"></span>
+    <span class="shard shard-3"></span><span class="shard shard-4"></span>
+    <span class="shard shard-5"></span><span class="shard shard-6"></span>
+    <span class="shard shard-7"></span><span class="shard shard-8"></span>
+    <span class="crack-lines"></span>
+  </div>
+  <div id="toastArea" class="toast-area" aria-live="polite"></div>
+<div id="metaBookOverlay" class="meta-book-overlay" hidden>
+  <div class="meta-book-card">
+    <small>THE THIRTEENTH VOLUME</small>
+    <h2 id="metaBookCategory">第十三冊已更新</h2>
+    <div class="meta-book-line"></div>
+    <strong id="metaBookEntry"></strong>
+    <span>NEW ENTRY</span>
+  </div>
+</div>
+
+  <div id="truthSystemOverlay" class="truth-system-overlay" role="alertdialog" aria-modal="true" aria-labelledby="truthSystemTitle" hidden>
+    <div class="truth-system-card">
+      <button id="truthSystemCloseButton" class="truth-system-close" type="button" aria-label="關閉真實判定系統提示">×</button>
+      <small>SYSTEM UPDATE</small>
+      <h2 id="truthSystemTitle">真實判定系統開放</h2>
+      <strong>【真實判定功能已開放】</strong>
+      <div class="truth-system-line"></div>
+      <p id="truthSystemPlayerNotice">玩家不能只靠單一道具判定真相。</p>
+      <p>必須比較來源、時間、角色反應及不同證據之間是否存在矛盾。</p>
+    </div>
+  </div>
+
+  <main id="app">
+    <section id="titleScreen" class="screen active">
+      <p class="eyebrow">TEXTUAL VISUAL NOVEL</p>
+      <h1>不存在的第十三冊</h1>
+      <p class="subtitle">有些故事，從來沒有被正式寫下。</p>
+      <div class="title-actions">
+        <button id="newGameButton" type="button">開始遊戲</button>
+        <button id="continueButton" type="button">繼續遊戲</button>
+        <button id="loadFromTitleButton" type="button">讀取存檔</button>
+        <button id="titleArchiveButton" type="button">第十三冊</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <header class="game-header">
+        <span id="chapterHeader"></span>
+        <div class="header-actions">
+          <button id="headerLogButton" class="small-button" type="button">LOG</button>
+          <button id="headerMenuButton" class="small-button" type="button">MENU</button>
+        </div>
+      </header>
+
+      <div class="game-frame">
+        <aside class="status-bar">
+          <span>黎靖好感度 <b id="affectionValue">0%</b></span>
+          <span><span id="suAffinityLabel">？？？好感度</span> <b id="suAffinityValue">0%</b></span>
+          <span>調查度 <b id="investigationValue">0%</b></span>
+          <span>相信值 <b id="beliefValue">0%</b></span>
+        </aside>
+
+        <div class="stage">
+          <div id="choiceArea" class="choice-area"></div>
+
+          <div class="dialogue-block">
+            <div id="speakerHeader" class="speaker-header" hidden>
+              <div id="speakerName" class="speaker-name"></div>
+              <div class="speaker-divider"></div>
+            </div>
+            <button id="messageWindow" class="message-window" type="button" aria-label="繼續閱讀">
+              <span id="messageText"></span>
+              <span id="advanceIndicator" class="advance-indicator" hidden>▼</span>
+            </button>
+          </div>
+        </div>
+
+        <nav class="quick-bar" aria-label="遊戲功能">
+          <button id="quickLogButton" type="button">LOG</button>
+          <button id="quickAutoButton" type="button">AUTO</button>
+          <button id="quickSkipButton" type="button">SKIP</button>
+          <button id="archiveButton" type="button">第十三冊</button>
+          <button id="quickSaveButton" type="button">SAVE</button>
+          <button id="quickLoadButton" type="button">LOAD</button>
+          <button id="quickMenuButton" type="button">MENU</button>
+        </nav>
+      </div>
+    </section>
+  </main>
+
+  <div id="sectionOverlay" class="overlay section-overlay" hidden>
+    <div>
+      <small>CHAPTER / SECTION</small>
+      <strong id="sectionTitle"></strong>
+    </div>
+  </div>
+
+  <div id="endingOverlay" class="overlay" hidden>
+    <div class="modal-card ending-card">
+      <small id="endingId"></small>
+      <h2 id="endingTitle"></h2>
+      <button id="endingReturnButton" type="button">返回標題頁</button>
+    </div>
+  </div>
+
+  <div id="chapterResultOverlay" class="overlay" hidden>
+    <div class="modal-card result-card">
+      <small>CHAPTER COMPLETE</small>
+      <h2 id="chapterResultTitle"></h2>
+      <div id="resultContent"></div>
+      <button id="resultContinueButton" type="button">繼續</button>
+    </div>
+  </div>
+
+  <div id="menuOverlay" class="overlay" hidden>
+    <div class="modal-card menu-card">
+      <small>MENU</small>
+      <h2>遊戲選單</h2>
+      <div class="menu-grid">
+        <button id="resumeButton" type="button">繼續</button>
+        <button id="saveButton" type="button">存檔</button>
+        <button id="loadButton" type="button">讀檔</button>
+        <button id="settingsButton" type="button">設定</button>
+        <button id="returnTitleButton" type="button">返回標題</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="slotsOverlay" class="overlay" hidden>
+    <div class="modal-card slots-card">
+      <header class="modal-header">
+        <div>
+          <small id="slotsModeLabel">SAVE</small>
+          <h2 id="slotsTitle">存檔</h2>
+        </div>
+        <button id="closeSlotsButton" class="icon-button" type="button">×</button>
+      </header>
+      <div id="slotsGrid" class="slots-grid"></div>
+    </div>
+  </div>
+
+  <div id="settingsOverlay" class="overlay" hidden>
+    <div class="modal-card settings-card">
+      <small>SETTINGS</small>
+      <h2>設定</h2>
+      <label for="textSpeedRange">文字速度</label>
+      <input id="textSpeedRange" type="range" min="12" max="100" step="4">
+      <div class="settings-row"><span>目前速度</span><b id="textSpeedLabel"></b></div>
+
+      <label for="fontSizeRange">文字大小</label>
+      <input id="fontSizeRange" type="range" min="16" max="34" step="1">
+      <div class="settings-row"><span>目前大小</span><b id="fontSizeLabel"></b></div>
+
+      <label for="uiOpacityRange">介面透明度</label>
+      <input id="uiOpacityRange" type="range" min="60" max="100" step="5">
+      <div class="settings-row"><span>目前透明度</span><b id="uiOpacityLabel"></b></div>
+
+      <label class="setting-toggle"><input id="motionToggle" type="checkbox"> 啟用畫面演出</label>
+      <button id="closeSettingsButton" type="button">完成</button>
+    </div>
+  </div>
+
+  <div id="archiveOverlay" class="overlay" hidden>
+    <div class="book-shell">
+      <header class="book-header">
+        <div><small>THE THIRTEENTH VOLUME</small><h2>第十三冊</h2></div>
+        <button id="closeArchiveButton" class="icon-button" type="button">×</button>
+      </header>
+      <nav class="book-tabs">
+        <button class="archive-tab active" data-tab="characters" type="button">人物</button>
+        <button class="archive-tab" data-tab="items" type="button">道具</button>
+        <button class="archive-tab" data-tab="information" type="button">情報</button>
+        <button class="archive-tab" data-tab="stats" type="button">數值</button>
+        <button class="archive-tab" data-tab="endings" type="button">結局</button>
+        <button class="archive-tab" data-tab="completion" type="button">收集率</button>
+      </nav>
+      <section class="book-pages">
+        <div id="bookLeftPage" class="book-page book-page-left"></div>
+        <div class="book-spine"></div>
+        <div id="bookRightPage" class="book-page book-page-right"></div>
+        <div id="pageTurnSheet" class="page-turn-sheet"></div>
+      </section>
+      <footer class="book-footer">
+        <button id="archivePrevButton" type="button">◀ 上一頁</button>
+        <span id="archivePageIndicator">1 / 1</span>
+        <button id="archiveNextButton" type="button">下一頁 ▶</button>
+      </footer>
+    </div>
+  </div>
+
+  <dialog id="nameDialog">
+    <form id="nameForm" method="dialog">
+      <small>PLAYER REGISTRATION</small>
+      <h2 id="nameDialogTitle">輸入玩家姓名</h2>
+      <input id="playerNameInput" maxlength="20" autocomplete="off" placeholder="請輸入姓名">
+      <p id="nameError"></p>
+      <button value="confirm" type="submit">確認</button>
+    </form>
+  </dialog>
+
+  <dialog id="logDialog">
+    <header class="modal-header">
+      <h2>文字紀錄</h2>
+      <button id="closeLogButton" class="icon-button" type="button">×</button>
+    </header>
+    <div id="logContent"></div>
+  </dialog>
+
+  <script src="story/chapters.js?v=20.75"></script>
+  <script src="story/chapter6.js?v=20.75"></script>
+  <script src="story/chapters7_10.js?v=20.75"></script>
+  <script src="story/fixes.js?v=20.75"></script>
+  <script src="story/chapter10_latest.js?v=20.75"></script>
+  <script src="story/item_database.js?v=20.75"></script>
+  <script src="js/store.js?v=20.75"></script>
+  <script src="js/effects.js?v=20.75"></script>
+  <script src="js/archive.js?v=20.75"></script>
+  <script src="js/engine.js?v=20.75"></script>
+</body>
+</html>
